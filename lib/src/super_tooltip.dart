@@ -687,53 +687,61 @@ class _SuperTooltipState extends State<SuperTooltip>
                             _superTooltipController!.hideTooltip();
                           }
                         },
-                        child: Container(
-                          key: SuperTooltip.bubbleKey,
-                          margin: SuperUtils.getTooltipMargin(
-                            arrowLength: widget.arrowLength,
-                            arrowTipDistance: widget.arrowTipDistance,
-                            closeButtonSize: closeButtonSize,
-                            preferredDirection: preferredDirection,
-                            closeButtonType: closeButtonType,
-                            showCloseButton: showCloseButton,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            widget.borderRadius,
                           ),
-                          padding: SuperUtils.getTooltipPadding(
-                            closeButtonSize: closeButtonSize,
-                            closeButtonType: closeButtonType,
-                            showCloseButton: showCloseButton,
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                            child: Container(
+                              key: SuperTooltip.bubbleKey,
+                              margin: SuperUtils.getTooltipMargin(
+                                arrowLength: widget.arrowLength,
+                                arrowTipDistance: widget.arrowTipDistance,
+                                closeButtonSize: closeButtonSize,
+                                preferredDirection: preferredDirection,
+                                closeButtonType: closeButtonType,
+                                showCloseButton: showCloseButton,
+                              ),
+                              padding: SuperUtils.getTooltipPadding(
+                                closeButtonSize: closeButtonSize,
+                                closeButtonType: closeButtonType,
+                                showCloseButton: showCloseButton,
+                              ),
+                              decoration: widget.decorationBuilder != null
+                                  ? widget.decorationBuilder!(target)
+                                  : ShapeDecoration(
+                                      color: backgroundColor,
+                                      shadows: hasShadow
+                                          ? widget.boxShadows ??
+                                              <BoxShadow>[
+                                                BoxShadow(
+                                                  blurRadius: shadowBlurRadius,
+                                                  spreadRadius: shadowSpreadRadius,
+                                                  color: shadowColor,
+                                                  offset: shadowOffset,
+                                                ),
+                                              ]
+                                          : null,
+                                      shape: BubbleShape(
+                                        arrowBaseWidth: widget.arrowBaseWidth,
+                                        arrowTipDistance: widget.arrowTipDistance,
+                                        arrowTipRadius: widget.arrowTipRadius,
+                                        borderColor: widget.borderColor,
+                                        borderRadius: widget.borderRadius,
+                                        borderWidth: widget.borderWidth,
+                                        bottom: bottom,
+                                        left: left,
+                                        preferredDirection: preferredDirection,
+                                        right: right,
+                                        target: target,
+                                        top: top,
+                                        bubbleDimensions: widget.bubbleDimensions,
+                                      ),
+                                    ),
+                              child: widget.content,
+                            ),
                           ),
-                          decoration: widget.decorationBuilder != null
-                              ? widget.decorationBuilder!(target)
-                              : ShapeDecoration(
-                                  color: backgroundColor,
-                                  shadows: hasShadow
-                                      ? widget.boxShadows ??
-                                          <BoxShadow>[
-                                            BoxShadow(
-                                              blurRadius: shadowBlurRadius,
-                                              spreadRadius: shadowSpreadRadius,
-                                              color: shadowColor,
-                                              offset: shadowOffset,
-                                            ),
-                                          ]
-                                      : null,
-                                  shape: BubbleShape(
-                                    arrowBaseWidth: widget.arrowBaseWidth,
-                                    arrowTipDistance: widget.arrowTipDistance,
-                                    arrowTipRadius: widget.arrowTipRadius,
-                                    borderColor: widget.borderColor,
-                                    borderRadius: widget.borderRadius,
-                                    borderWidth: widget.borderWidth,
-                                    bottom: bottom,
-                                    left: left,
-                                    preferredDirection: preferredDirection,
-                                    right: right,
-                                    target: target,
-                                    top: top,
-                                    bubbleDimensions: widget.bubbleDimensions,
-                                  ),
-                                ),
-                          child: widget.content,
                         ),
                       ),
                     ),
